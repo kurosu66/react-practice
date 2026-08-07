@@ -11,9 +11,22 @@ export default function App() {
 
   const [tasks, setTasks] = useState(initialTasks);
 
+  function handleToggleTasks(taskId, nextCompleted) {
+    setTasks(tasks.map(task => {
+      if (task.id === taskId) {
+        return { ...task, completed: nextCompleted };
+      } else {
+        return task;
+      }
+    }))
+  }
+
   return (
     <>
-      <TaskList tasks={tasks} />
+      <TaskList
+        tasks={tasks}
+        onToggle={handleToggleTasks}
+      />
     </>
   );
 }
