@@ -1,4 +1,4 @@
-export default function TasksList({tasks, onToggle}) {
+export default function TasksList({tasks, onToggle, onDelete}) {
   const taskList = tasks.map(task =>
     <li key={task.id}>
       <label>
@@ -14,6 +14,9 @@ export default function TasksList({tasks, onToggle}) {
         />
         {task.title}
       </label>
+        <button onClick={() => {
+          onDelete(task.id);
+        }}>削除</button>
     </li>
   );
 
