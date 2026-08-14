@@ -1,14 +1,10 @@
 import TaskList from './TaskList'
+import TaskForm from './TaskForm';
 import { useState } from 'react';
 
 export default function App() {
-  const initialTasks = [
-    { id: 1, title: '日本円を買う', completed: false },
-    { id: 2, title: '宿題', completed: false },
-    { id: 3, title: '掃除', completed: true },
-    { id: 4, title: '買い出し', completed: false }
-  ]
-
+  const initialTasks = []
+  const [nextId, setNextId] = useState(0);
   const [tasks, setTasks] = useState(initialTasks);
 
   function handleToggleTasks(taskId, nextCompleted) {
@@ -27,12 +23,23 @@ export default function App() {
     ))
   };
 
+  function handleAddTask(title) {
+    setTasks([
+      ...tasks,
+      {id: nextId, title: title}
+    ])
+    setNextId(nextId + 1);
+  }
+
   return (
     <>
       <TaskList
         tasks={tasks}
         onToggle={handleToggleTasks}
         onDelete={handleDeleteTasks}
+      />
+      <TaskForm
+        handleAddTask={handleAddTask}
       />
     </>
   );
