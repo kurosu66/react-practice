@@ -24,9 +24,10 @@ export default function App() {
   };
 
   function handleAddTask(title) {
+    const newId = Date.now();
     setTasks([
       ...tasks,
-      {id: nextId, title: title}
+      {id: newId, title: title}
     ])
     setNextId(nextId + 1);
   }
