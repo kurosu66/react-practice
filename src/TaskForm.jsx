@@ -10,7 +10,10 @@ export default function TaskForm({ handleAddTask }) {
         value={title}
         onChange={e => setTitle(e.target.value)}
       />
-    <button onClick={() => handleAddTask(title)}>Add</button>
+
+      <button
+        disabled={ title.trim() === ''}
+        onClick={() => handleAddTask(title)}>Add</button>
   </>
   )
 }
