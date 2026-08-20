@@ -34,13 +34,13 @@ export default function App() {
 
   return (
     <>
+      <TaskForm
+        handleAddTask={handleAddTask}
+      />
       <TaskList
         tasks={tasks}
         onToggle={handleToggleTasks}
         onDelete={handleDeleteTasks}
-      />
-      <TaskForm
-        handleAddTask={handleAddTask}
       />
     </>
   );
