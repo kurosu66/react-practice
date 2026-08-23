@@ -3,8 +3,7 @@ import TaskForm from './TaskForm';
 import { useState } from 'react';
 
 export default function App() {
-  const initialTasks = []
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks, setTasks] = useState([]);
 
   function handleToggleTasks(taskId, nextCompleted) {
     setTasks(tasks.map(task => {
