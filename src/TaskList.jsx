@@ -12,7 +12,13 @@ export default function TasksList({tasks, onToggle, onDelete}) {
             );
           }}
         />
-        {task.title}
+        {task.completed ? (
+          <del>
+            { task.title }
+          </del>
+        ) : (
+          task.title
+        )}
       </label>
         <button onClick={() => {
           onDelete(task.id);
