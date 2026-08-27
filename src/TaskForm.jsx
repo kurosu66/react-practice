@@ -13,7 +13,10 @@ export default function TaskForm({ handleAddTask }) {
 
       <button
         disabled={ title.trim() === ''}
-        onClick={() => handleAddTask(title)}>Add</button>
-  </>
+        onClick={() => {
+          handleAddTask(title)
+          setTitle('')
+        }}>Add</button>
+    </>
   )
 }
