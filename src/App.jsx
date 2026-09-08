@@ -1,33 +1,31 @@
 import TaskList from './TaskList'
 import TaskForm from './TaskForm';
-import { useState } from 'react';
+import { useReducer } from 'react';
 
 export default function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, dispatch] = useReducer(TasksReducer, []);
 
   function handleToggleTasks(taskId, nextCompleted) {
-    setTasks(tasks.map(task => {
-      if (task.id === taskId) {
-        return { ...task, completed: nextCompleted };
-      } else {
-        return task;
-      }
-    }))
-  }
+    dispatch({
+      type: 'toggled',
+      id: taskId,
+      completed: nextCompleted,
+    })
+  };
 
   function handleDeleteTasks(taskId) {
-    setTasks(tasks.filter(t =>
-      t.id !== taskId
-    ))
+      dispatch({
+        type: 'delete',
+        id: taskId,
+      })
   };
 
   function handleAddTask(title) {
-    const newId = Date.now();
-    setTasks([
-      ...tasks,
-      {id: newId, title: title}
-    ])
-  }
+    dispatch({
+      type: 'add',
+      title: title,
+    })
+  };
 
   return (
     <>
@@ -41,4 +39,24 @@ export default function App() {
       />
     </>
   );
+
+  function TasksReducer(tasks, action) {
+    switch (action.type) {
+      case 'add':
+      return [
+        ...tasks,
+        { id: Date.now(), title: action.title, },
+      ];
+      case 'toggled':
+        return tasks.map((task) =>
+            task.id === action.id
+              ? { ...task, completed: action.completed }
+              : task
+        );
+      case 'delete':
+        return tasks.filter(task => task.id !== action.id);
+      default:
+        return tasks;
+    }
+  }
 }
