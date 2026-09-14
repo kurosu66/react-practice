@@ -3,7 +3,11 @@ import TaskForm from './TaskForm';
 import { useReducer } from 'react';
 
 export default function App() {
-  const [tasks, dispatch] = useReducer(TasksReducer, []);
+  const initialState = {
+    tasks: [],
+    history: [],
+  }
+  const [state, dispatch] = useReducer(TasksReducer, initialState);
 
   function handleToggleTasks(taskId, nextCompleted) {
     dispatch({
@@ -27,36 +31,55 @@ export default function App() {
     })
   };
 
+  function handleUndoTask() {
+    dispatch({
+      type: 'undo',
+    })
+  };
+
   return (
     <>
       <TaskForm
         handleAddTask={handleAddTask}
       />
+      <button onClick={handleUndoTask}> 元に戻す </button>
       <TaskList
-        tasks={tasks}
+        tasks={state.tasks}
         onToggle={handleToggleTasks}
         onDelete={handleDeleteTasks}
       />
     </>
   );
 
-  function TasksReducer(tasks, action) {
+  function TasksReducer(state, action) {
     switch (action.type) {
       case 'add':
-      return [
-        ...tasks,
-        { id: Date.now(), title: action.title, },
-      ];
+        return {
+          history: [...state.history, state.tasks],
+          tasks: [
+            ...state.tasks,
+            { id: Date.now(), title: action.title, },
+          ],
+        };
       case 'toggled':
-        return tasks.map((task) =>
+        return {
+          history: [...state.history, state.tasks],
+          tasks: state.tasks.map((task) =>
             task.id === action.id
               ? { ...task, completed: action.completed }
               : task
-        );
+          ),
+        };
       case 'delete':
-        return tasks.filter(task => task.id !== action.id);
+        return state.tasks.filter(task => task.id !== action.id);
+      case 'undo':
+        if (state.history.length === 0) return state;
+        return {
+          history: state.history.slice(0, -1),
+          tasks: state.history[state.history.length - 1]
+        };
       default:
-        return tasks;
+        return state;
     }
   }
 }
