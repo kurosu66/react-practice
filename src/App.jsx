@@ -2,6 +2,42 @@ import TaskList from './TaskList'
 import TaskForm from './TaskForm';
 import { useReducer } from 'react';
 
+function TasksReducer(state, action) {
+  switch (action.type) {
+    case 'add':
+      return {
+        history: [...state.history, state.tasks],
+        tasks: [
+          ...state.tasks,
+          { id: Date.now(), title: action.title, },
+        ],
+      };
+    case 'toggled':
+      return {
+        history: [...state.history, state.tasks],
+        tasks: state.tasks.map((task) =>
+          task.id === action.id
+            ? { ...task, completed: action.completed }
+            : task
+        ),
+      };
+    case 'delete':
+      return {
+        history: [...state.history, state.tasks],
+        tasks: state.tasks.filter(task => task.id !== action.id),
+      }
+
+    case 'undo':
+      if (state.history.length === 0) return state;
+      return {
+        history: state.history.slice(0, -1),
+        tasks: state.history[state.history.length - 1]
+      };
+    default:
+      return state;
+  }
+}
+
 export default function App() {
   const initialState = {
     tasks: [],
@@ -50,40 +86,4 @@ export default function App() {
       />
     </>
   );
-
-  function TasksReducer(state, action) {
-    switch (action.type) {
-      case 'add':
-        return {
-          history: [...state.history, state.tasks],
-          tasks: [
-            ...state.tasks,
-            { id: Date.now(), title: action.title, },
-          ],
-        };
-      case 'toggled':
-        return {
-          history: [...state.history, state.tasks],
-          tasks: state.tasks.map((task) =>
-            task.id === action.id
-              ? { ...task, completed: action.completed }
-              : task
-          ),
-        };
-      case 'delete':
-        return {
-          history: [...state.history, state.tasks],
-          tasks: state.tasks.filter(task => task.id !== action.id),
-        }
-
-      case 'undo':
-        if (state.history.length === 0) return state;
-        return {
-          history: state.history.slice(0, -1),
-          tasks: state.history[state.history.length - 1]
-        };
-      default:
-        return state;
-    }
-  }
 }
