@@ -71,7 +71,11 @@ export default function App() {
           ),
         };
       case 'delete':
-        return state.tasks.filter(task => task.id !== action.id);
+        return {
+          history: [...state.history, state.tasks],
+          tasks: state.tasks.filter(task => task.id !== action.id),
+        }
+
       case 'undo':
         if (state.history.length === 0) return state;
         return {
