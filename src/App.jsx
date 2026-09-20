@@ -1,6 +1,7 @@
 import TaskList from './TaskList'
 import TaskForm from './TaskForm';
-import { useReducer } from 'react';
+import { useContext, useReducer } from 'react';
+import { ThemeContext, ThemeProvider } from './ThemeContext';
 
 function TasksReducer(state, action) {
   switch (action.type) {
@@ -38,7 +39,9 @@ function TasksReducer(state, action) {
   }
 }
 
-export default function App() {
+function AppContent() {
+  const { isDark, setIsDark } = useContext(ThemeContext);
+
   const initialState = {
     tasks: [],
     history: [],
@@ -75,15 +78,37 @@ export default function App() {
 
   return (
     <>
+      <div style={{
+        background: isDark ? '#333' : '#fff',
+        color: isDark ? '#fff' : '#333',
+        minHeight: '100vh',
+        margin: -8,
+        padding: 8,
+        boxSizing: 'border-box',
+      }}>
       <TaskForm
         handleAddTask={handleAddTask}
       />
+      <button onClick={() => setIsDark(!isDark)}>
+        {isDark ? 'ライトモードにする' : 'ダークモードにする'}
+      </button>
       <button onClick={handleUndoTask}> 元に戻す </button>
       <TaskList
         tasks={state.tasks}
         onToggle={handleToggleTasks}
         onDelete={handleDeleteTasks}
-      />
+        />
+      </div>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <>
+      <ThemeProvider>
+          <AppContent />
+      </ThemeProvider>
     </>
   );
 }
