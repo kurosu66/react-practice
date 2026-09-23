@@ -5,7 +5,7 @@ import { ThemeContext, ThemeProvider } from './ThemeContext';
 
 function TasksReducer(state, action) {
   switch (action.type) {
-    case 'add':
+    case 'added':
       return {
         history: [...state.history, state.tasks],
         tasks: [
@@ -22,7 +22,7 @@ function TasksReducer(state, action) {
             : task
         ),
       };
-    case 'delete':
+    case 'deleted':
       return {
         history: [...state.history, state.tasks],
         tasks: state.tasks.filter(task => task.id !== action.id),
@@ -58,14 +58,14 @@ function AppContent() {
 
   function handleDeleteTasks(taskId) {
       dispatch({
-        type: 'delete',
+        type: 'deleted',
         id: taskId,
       })
   };
 
   function handleAddTask(title) {
     dispatch({
-      type: 'add',
+      type: 'added',
       title: title,
     })
   };
