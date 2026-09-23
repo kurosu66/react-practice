@@ -1,4 +1,4 @@
-import TaskList from './TaskList'
+import TaskList from './TaskList';
 import TaskForm from './TaskForm';
 import { useContext, useReducer } from 'react';
 import { ThemeContext, ThemeProvider } from './ThemeContext';
@@ -92,7 +92,9 @@ function AppContent() {
       <button onClick={() => setIsDark(!isDark)}>
         {isDark ? 'ライトモードにする' : 'ダークモードにする'}
       </button>
-      <button onClick={handleUndoTask}> 元に戻す </button>
+        <button onClick={handleUndoTask} disabled={state.history.length === 0}>
+          元に戻す
+        </button>
       <TaskList
         tasks={state.tasks}
         onToggle={handleToggleTasks}
@@ -107,7 +109,7 @@ export default function App() {
   return (
     <>
       <ThemeProvider>
-          <AppContent />
+        <AppContent />
       </ThemeProvider>
     </>
   );
