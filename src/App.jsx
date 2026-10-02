@@ -28,7 +28,7 @@ function TasksReducer(state, action) {
         tasks: state.tasks.filter(task => task.id !== action.id),
       }
 
-    case 'undo':
+    case 'undone':
       if (state.history.length === 0) return state;
       return {
         history: state.history.slice(0, -1),
@@ -73,7 +73,7 @@ function AppContent() {
 
   function handleUndoTask() {
     dispatch({
-      type: 'undo',
+      type: 'undone',
     })
   };
 
