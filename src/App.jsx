@@ -10,7 +10,7 @@ function TasksReducer(state, action) {
         history: [...state.history, state.tasks],
         tasks: [
           ...state.tasks,
-          { id: Date.now(), title: action.title, },
+          { id: action.id, title: action.title, },
         ],
       };
     case 'toggled':
@@ -66,6 +66,7 @@ function AppContent() {
   function handleAddTask(title) {
     dispatch({
       type: 'added',
+      id: Date.now(),
       title: title,
     })
   };
