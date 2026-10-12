@@ -1,7 +1,8 @@
 import TaskList from './TaskList';
 import TaskForm from './TaskForm';
-import { useContext, useReducer } from 'react';
+import { useContext } from 'react';
 import { ThemeContext, ThemeProvider } from './ThemeContext';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 function TasksReducer(state, action) {
   switch (action.type) {
@@ -46,7 +47,7 @@ function AppContent() {
     tasks: [],
     history: [],
   }
-  const [state, dispatch] = useReducer(TasksReducer, initialState);
+  const [state, dispatch] = useLocalStorage(TasksReducer, initialState);
 
   function handleToggleTasks(taskId, nextCompleted) {
     dispatch({
