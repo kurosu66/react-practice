@@ -11,5 +11,15 @@ export function useLocalStorage(reducer, initialState) {
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(state.tasks))
   }, [state.tasks])
+
+  useEffect(() => {
+    function handleStorage(event) {
+      if (event.key === 'tasks' && event.newValue) {
+        dispatch({ type: 'synced', tasks: JSON.parse(event.newValue) })
+      }
+    }
+      window.addEventListener('storage', handleStorage);
+      return () => { window.removeEventListener('storage', handleStorage) };
+    }, []);
   return [state, dispatch];
 }
